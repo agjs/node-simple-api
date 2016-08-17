@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var config = require('./config/variables.express');
 
+require('./config/mongoose.connection'); /* Connection to our mongoDB using mongoose */
+
 require('./config/middleware.express')(app); /* Our Express Application Configuration */
 
 app.get('/', function(req, res){

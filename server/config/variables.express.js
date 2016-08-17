@@ -6,8 +6,10 @@ module.exports = {
     },
 
     MONGODB: {
-        URL: '',
-        PORT: ''
+        URL: 'mongodb://localhost/simple-node-dylan',
+        PORT: '',
+        CONNECTED_MESSAGE: 'Successfully connected to mongoDB',
+        FAILED_MESSAGE: 'Could not connect to mongoDB'
     }
 
 };

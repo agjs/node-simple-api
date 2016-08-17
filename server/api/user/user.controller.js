@@ -1,4 +1,4 @@
-var Users = require('./user.model');
+var User = require('./user.model');
 
 function Controller() {
 
@@ -7,7 +7,13 @@ function Controller() {
 Controller.prototype = {
 
     getUsers: function(req, res) {
-        res.status(200).json(Users);
+       User.find({}, function(error, users){
+           if(error) {
+               console.log(error);
+           } else {
+                res.status(200).json(users);
+           }
+       })
     },
 
     getUser: function(req, res) {
@@ -17,8 +23,17 @@ Controller.prototype = {
     },
 
     createUser: function(req, res) {
-        console.log('you wanna create a user with', req.body);
-        // create a user
+       
+       User.create({username: req.body.username, password: req.body.password}, function(error, user){
+
+           if(error) {
+               console.log(error);
+           } else {
+               res.status(201).json(user);
+           }
+
+       });
+
     },
 
     updateUser: function(req, res) {
