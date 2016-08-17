@@ -1,14 +1,15 @@
 var express = require('express');
 var app = express();
+var config = require('./config/variables.express');
 
+require('./config/middleware.express')(app); /* Our Express Application Configuration */
 
 app.get('/', function(req, res){
     res.status(200).json({title: 'Welcome to simple node api'});
 });
 
-app.use('/users', require('./api/user/user.router'));
+require('./config/router.express')(app); /* all routes */
 
-
-app.listen(3004, function(){
-    console.log('listening on port 3004');
+app.listen(config.EXPRESS.PORT, function(){
+    console.log(config.EXPRESS.MESSAGE);
 });
