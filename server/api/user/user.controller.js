@@ -6,44 +6,87 @@ function Controller() {
 
 Controller.prototype = {
 
+    me: function(req, res) {
+        User.findById(req.user.id, function(error, user) {
+            if (error) {
+                console.log(error);
+            } else {
+                res.status(200).json(user);
+            }
+        })
+    },
+
+
     getUsers: function(req, res) {
-       User.find({}, function(error, users){
-           if(error) {
-               console.log(error);
-           } else {
+        User.find({}, function(error, users) {
+            if (error) {
+                console.log(error);
+            } else {
                 res.status(200).json(users);
-           }
-       })
+            }
+        })
     },
 
     getUser: function(req, res) {
-        
-        console.log('you wanted to get a single user', req.params.name);
-        // get a single user
+
+        User.findById(req.params.id, function(error, user) {
+
+            if (error) {
+                console.log(error);
+            } else {
+                res.status(201).json(user);
+            }
+
+        });
+
     },
 
     createUser: function(req, res) {
-       
-       User.create({username: req.body.username, password: req.body.password}, function(error, user){
 
-           if(error) {
-               console.log(error);
-           } else {
-               res.status(201).json(user);
-           }
+        User.create({
+            username: req.body.username,
+            password: req.body.password
+        }, function(error, user) {
 
-       });
+            if (error) {
+                console.log(error);
+            } else {
+                res.status(201).json(user);
+            }
+
+        });
 
     },
 
     updateUser: function(req, res) {
-        console.log('you wanted to update a user with id', req.params.id);
-        // update user
+
+        User.findByIdAndUpdate(req.params.id, {
+            name: req.body.name,
+            surname: req.body.surname
+        }, function(error, user) {
+            if (error) {
+                console.log(error);
+            } else {
+                res.status(201).json(user);
+            }
+        });
+
     },
 
     deleteUser: function(req, res) {
-        console.log('you wanted to delete a user with id', req.params.id);
-        // delete user
+
+        User.remove({
+            _id: req.params.id
+        }, function(error) {
+            if (error) {
+                console.log(error);
+            } else {
+                res.status(204).json({
+                    success: 'User deleted!'
+                });
+            }
+        });
+
     }
 };
 

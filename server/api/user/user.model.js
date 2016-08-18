@@ -14,5 +14,12 @@ var userSchema = mongoose.Schema({
     surname: String
 });
 
+
+userSchema.methods.validPassword = function( pwd ) {
+    return ( this.password === pwd );
+};
+
 var User = mongoose.model('User', userSchema);
+
+
 module.exports = User;

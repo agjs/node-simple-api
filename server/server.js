@@ -6,9 +6,11 @@ require('./config/mongoose.connection'); /* Connection to our mongoDB using mong
 
 require('./config/middleware.express')(app); /* Our Express Application Configuration */
 
+
 app.get('/', function(req, res){
     res.status(200).json({title: 'Welcome to simple node api'});
 });
+
 
 require('./config/router.express')(app); /* all routes */
 
