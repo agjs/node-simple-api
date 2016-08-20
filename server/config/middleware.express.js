@@ -2,11 +2,20 @@ var express = require('express');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var bodyParser = require('body-parser');
+var path = require('path');
 var passport = require('passport'); /* http://passportjs.org/docs/configure */
 
 module.exports = function(app) {
 
     require('./passport/local.passport_strategy');
+
+    app.use(express.static((path.join(__dirname, '../../client'))));
+    app.use('/libs', express.static((path.join(__dirname, '../../node_modules'))));
+
+    /* -------------------------------------------------------------------------- */
+
+    app.set('client', path.join(__dirname, '../../client/'));
+
 
     app.use(cookieParser()); /*https://github.com/expressjs/cookie-parser */
     app.use(bodyParser.urlencoded({
@@ -14,7 +23,7 @@ module.exports = function(app) {
     }));
 
     app.use(bodyParser.json());
-    app.use(session({       /* https://github.com/expressjs/session */
+    app.use(session({ /* https://github.com/expressjs/session */
         secret: 'dylan the dunne',
         resave: false,
         saveUninitialized: false
@@ -25,6 +34,5 @@ module.exports = function(app) {
 
     require('./passport/sessions.passport')();
 
+
 }
-
-
