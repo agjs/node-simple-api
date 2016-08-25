@@ -1,3 +1,5 @@
+var loggedInUser = {};
+
 var homePage = `
         <div class="row">
         <div class="container">
@@ -22,12 +24,12 @@ var loginPage = `
     <div class="container">
         <div class="row" style="margin-top:20px">
             <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-                <form role="form">
+                <form id="login" role="form" action="/login" method="post">
                     <fieldset>
                         <h2>Please Sign In</h2>
                         <hr class="colorgraph">
                         <div class="form-group">
-                            <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address">
+                            <input type="text" name="username" id="username" class="form-control input-lg" placeholder="Type in your username">
                         </div>
                         <div class="form-group">
                             <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
@@ -53,22 +55,59 @@ var loginPage = `
     </div>
 `;
 
+var usersPage = `
+
+    <ul id="usersPage">
+      HERE IS WHERE WE LEFT OFF
+    </ul>
+
+`;
+
 function init() {
 
     $('#top-menu').on('click', 'li a', function() {
 
         if ($(this).text() === 'Login') {
+            window.location.hash = 'login';
             renderPage(loginPage);
         } else if ($(this).text() === 'Home') {
+            window.location.hash = 'home';
             renderPage(homePage)
         }
 
     });
 
+
+
+
+
 };
 
 function renderPage(page) {
+
     $('#mainView').html(page);
+
+    if ($('container').find($('#login'))) {
+        $('#login').on('submit', function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: '/login',
+                type: 'POST',
+                data: {
+                    username: $('#username').val(),
+                    password: $('#password').val()
+                },
+                success: function(data) {
+                    loggedInUser = data;
+                    console.log('cool', loggedInUser);
+                    window.location.hash = 'profile'
+                }
+            })
+
+        });
+    }
+
 }
 
 init();
